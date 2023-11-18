@@ -5,6 +5,7 @@ class Player {
             y: 100
         }
 
+        // velocidade inicial 0
         this.velocity = {
             x: 0,
             y: 0
@@ -17,6 +18,7 @@ class Player {
             bottom: this.position.y + this.height,
         }
 
+        // gravidade definida como 1
         this.gravity = 1;
     }
 
@@ -26,14 +28,17 @@ class Player {
     }
 
     update() {
+        // posicões em x e y mudam a partir das velocidades
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
         this.sides.bottom = this.position.y + this.height;
 
-        // acima do chão do canvas 
+        // manter acima do chão do canvas 
         if (this.sides.bottom + this.velocity.y < canvas.height) {
+            // caso esteja dentro do canvas, velocidade aumenta de acordo com gravidade
             this.velocity.y += this.gravity;
         } else {
+            // senao, velocidade recebe 0
             this.velocity.y = 0;
         }
     }
