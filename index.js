@@ -18,7 +18,9 @@ const backgroundLevel1 = new Sprite({
     imageSrc: './img/backgroundLevel1.png',
 })
 
-const player = new Player();
+const player = new Player({
+    collisionBlocks     // mesma coisa que: collisionBlocks = collisionBlocks
+});
 
 // criando objeto com as teclas de movimentacao do player, setando o atributo 'pressionado' como false
 const keys = {
