@@ -1,6 +1,6 @@
 class Player extends Sprite {
     constructor({ collisionBlocks = [], imageSrc, frameRate }) {
-        super({imageSrc, frameRate})
+        super({ imageSrc, frameRate })
         this.position = {
             x: 200, // mudança da posicao de spawn
             y: 200
@@ -28,16 +28,42 @@ class Player extends Sprite {
         // c.fillRect(this.position.x, this.position.y, this.width, this.height)
 
         // posicões em x e y mudam a partir das velocidades
-        this.position.x += this.velocity.x;
+        this.position.x += this.velocity.x
+
+        // atualizando a hitbox
+        this.updateHitbox()
+
         // checando se tem colisao horizontal
-        this.checkForHorizontalCollisions();
+        this.checkForHorizontalCollisions()
+
         // aplicando gravidade
-        this.applyGravity();
+        this.applyGravity()
+
+        // atualizando a hitbox
+        this.updateHitbox()
+
+        // c.fillRect(
+        //     this.hitbox.position.x,
+        //     this.hitbox.position.y,
+        //     this.hitbox.width,
+        //     this.hitbox.height)
+
         // checando se tem colisao vertical
-        this.checkForVerticalCollisions();
+        this.checkForVerticalCollisions()
 
         /* bloco onde era aplicada a gravidade 
         e checava colisao do chão do canvas nao tem mais necessidade */
+    }
+
+    updateHitbox() {
+        this.hitbox = {
+            position: {
+                x: this.position.x + 58,
+                y: this.position.y + 34,
+            },
+            width: 50,
+            height: 53,
+        }
     }
 
     checkForHorizontalCollisions() {
@@ -46,19 +72,21 @@ class Player extends Sprite {
 
             // se a colisao existir
             if (
-                this.position.x <= collisionBlock.position.x + collisionBlock.width &&
-                this.position.x + this.width >= collisionBlock.position.x &&
-                this.position.y + this.height >= collisionBlock.position.y &&
-                this.position.y <= collisionBlock.position.y + collisionBlock.height
+                this.hitbox.position.x <= collisionBlock.position.x + collisionBlock.width &&
+                this.hitbox.position.x + this.hitbox.width >= collisionBlock.position.x &&
+                this.hitbox.position.y + this.hitbox.height >= collisionBlock.position.y &&
+                this.hitbox.position.y <= collisionBlock.position.y + collisionBlock.height
             ) {
                 // se a colisao no eixo x for enquanto estiver indo para a esquerda
-                if (this.velocity.x < 0) {
-                    this.position.x = collisionBlock.position.x + collisionBlock.width + 0.01;
+                if (this.velocity.x < -0) {
+                    const offset = this.hitbox.position.x - this.position.x
+                    this.position.x = collisionBlock.position.x + collisionBlock.width - offset + 0.01;
                     break;
                 }
                 // se a colisao no eixo x for enquanto estiver indo para a direita
                 if (this.velocity.x > 0) {
-                    this.position.x = collisionBlock.position.x - this.width - 0.01;
+                    const offset = this.hitbox.position.x - this.position.x + this.hitbox.width
+                    this.position.x = collisionBlock.position.x - offset - 0.01;
                     break;
                 }
             }
@@ -76,10 +104,10 @@ class Player extends Sprite {
 
             // se a colisao existir
             if (
-                this.position.x <= collisionBlock.position.x + collisionBlock.width &&
-                this.position.x + this.width >= collisionBlock.position.x &&
-                this.position.y + this.height >= collisionBlock.position.y &&
-                this.position.y <= collisionBlock.position.y + collisionBlock.height
+                this.hitbox.position.x + this.hitbox.width >= collisionBlock.position.x &&
+                this.hitbox.position.x <= collisionBlock.position.x + collisionBlock.width &&
+                this.hitbox.position.y + this.hitbox.height >= collisionBlock.position.y &&
+                this.hitbox.position.y <= collisionBlock.position.y + collisionBlock.height
             ) {
                 // se a colisao no eixo y for enquanto estiver indo para cima
                 if (this.velocity.y < 0) {
@@ -90,7 +118,8 @@ class Player extends Sprite {
                 // se a colisao no eixo y for enquanto estiver indo para baixo
                 if (this.velocity.y > 0) {
                     this.velocity.y = 0;
-                    this.position.y = collisionBlock.position.y - this.height - 0.01;
+                    const offset = this.hitbox.position.y - this.position.y + this.hitbox.height
+                    this.position.y = collisionBlock.position.y - offset - 0.01;
                     break;
                 }
             }
