@@ -6,8 +6,8 @@ class PlayerError extends Error {
 }
 
 class Player extends Sprite {
-    constructor({ collisionBlocks = [], imageSrc, frameRate, animations }) {
-        super({ imageSrc, frameRate, animations })
+    constructor({ collisionBlocks = [], imageSrc, frameRate, animations, loop }) {
+        super({ imageSrc, frameRate, animations, loop })
         this.position = {
             x: 200, // mudança da posicao de spawn
             y: 200
@@ -34,45 +34,76 @@ class Player extends Sprite {
             // hitbox - caixa azul
             // c.fillStyle = 'rgba(0, 0, 255, 0.5)'
             // c.fillRect(this.position.x, this.position.y, this.width, this.height)
-    
+
             // posicões em x e y mudam a partir das velocidades
             this.position.x += this.velocity.x
-    
+
             // atualizando a hitbox
             this.updateHitbox()
-    
+
             // checando se tem colisao horizontal
             this.checkForHorizontalCollisions()
-    
+
             // aplicando gravidade
             this.applyGravity()
-    
+
             // atualizando a hitbox
             this.updateHitbox()
-    
+
             // c.fillRect(
             //     this.hitbox.position.x,
             //     this.hitbox.position.y,
             //     this.hitbox.width,
             //     this.hitbox.height)
-    
+
             // checando se tem colisao vertical
             this.checkForVerticalCollisions()
-    
+
             /* bloco onde era aplicada a gravidade 
             e checava colisao do chão do canvas nao tem mais necessidade */
-            
+
         } catch (error) {
             console.error("Ocorreu um erro durante a atualização do jogador: ", error);
         }
     }
-    
+
+    handleInput(keys) {
+        try {
+            // se o player estiver entrando na porta
+            if (player.preventInput) return
+            // velocidade inicial do player no eixo x = 0, caso tecla 'd' ou 'a' apertadas, velocidade = 5
+            player.velocity.x = 0
+            if (keys.d.pressed) {
+                player.switchSprite("runRight")
+                player.velocity.x = 5
+                player.lastDirection = "right"
+            } else if (keys.a.pressed) {
+                player.switchSprite("runLeft")
+                player.velocity.x = -5
+                player.lastDirection = "left"
+            } else {
+                if (player.lastDirection === 'left') {
+                    player.switchSprite("idleLeft")
+                } else {
+                    player.switchSprite("idleRight")
+                }
+            }
+        } catch (error) {
+            throw new PlayerError("Erro ao lidar com a entrada da porta")
+        }
+    }
+
     switchSprite(name) {
-        if (this.image === this.animations[name].image) return
-        this.currentFrame = 0
-        this.image = this.animations[name].image
-        this.frameRate = this.animations[name].frameRate
-        this.frameBuffer = this.animations[name].frameBuffer
+        try {
+            if (this.image === this.animations[name].image) return
+            this.currentFrame = 0
+            this.image = this.animations[name].image
+            this.frameRate = this.animations[name].frameRate
+            this.frameBuffer = this.animations[name].frameBuffer
+            this.loop = this.animations[name].loop
+        } catch (error) {
+            throw new PlayerError("Erro ao trocar a sprite do jogador")
+        }
     }
 
     updateHitbox() {
@@ -94,7 +125,7 @@ class Player extends Sprite {
         try {
             for (let i = 0; i < this.collisionBlocks.length; i++) {
                 const collisionBlock = this.collisionBlocks[i];
-    
+
                 // se a colisao existir
                 if (
                     this.hitbox.position.x <= collisionBlock.position.x + collisionBlock.width &&
@@ -134,7 +165,7 @@ class Player extends Sprite {
         try {
             for (let i = 0; i < this.collisionBlocks.length; i++) {
                 const collisionBlock = this.collisionBlocks[i];
-    
+
                 // se a colisao existir
                 if (
                     this.hitbox.position.x + this.hitbox.width >= collisionBlock.position.x &&
