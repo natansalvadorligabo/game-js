@@ -22,6 +22,32 @@ const player = new Player({
     collisionBlocks,     // mesma coisa que: collisionBlocks = collisionBlocks
     imageSrc: './img/king/idle.png', 
     frameRate: 11,
+    animations: {
+        idleRight: {
+            frameRate: 11,
+            frameBuffer: 2,
+            loop: true,
+            imageSrc: './img/king/idle.png', 
+        },
+        idleLeft: {
+            frameRate: 11,
+            frameBuffer: 2,
+            loop: true,
+            imageSrc: './img/king/idleLeft.png', 
+        },
+        runRight: {
+            frameRate: 8,
+            frameBuffer: 4,
+            loop: true,
+            imageSrc: './img/king/runRight.png', 
+        },
+        runLeft: {
+            frameRate: 8,
+            frameBuffer: 4,
+            loop: true,
+            imageSrc: './img/king/runLeft.png',
+        },
+    }
 })
 
 // criando objeto com as teclas de movimentacao do player, setando o atributo 'pressionado' como false
@@ -50,11 +76,19 @@ function animate() {
 
     // velocidade inicial do player no eixo x = 0, caso tecla 'd' ou 'a' apertadas, velocidade = 5
     player.velocity.x = 0
-    if (keys.d.pressed){
+    if (keys.d.pressed) {
+        player.switchSprite("runRight")
         player.velocity.x = 5
-    }else{
-        if(keys.a.pressed){
-            player.velocity.x = -5
+        player.lastDirection = "right"
+    } else if (keys.a.pressed) {
+        player.switchSprite("runLeft")
+        player.velocity.x = -5
+        player.lastDirection = "left"
+    } else {
+        if (player.lastDirection === 'left') {
+            player.switchSprite("idleLeft")
+        } else {
+            player.switchSprite("idleRight")
         }
     }
     
