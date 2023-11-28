@@ -13,7 +13,7 @@ Array.prototype.createObjetcsFrom2D = function () {
     this.forEach((row, y) => {
         row.forEach((symbol, x) => {
             // se o símbolo for 292, cria um novo objeto CollisionBlock e o adiciona ao array.
-            if (symbol === 292) {
+            if (symbol === 292 || symbol === 250) {
                 objects.push(
                     new CollisionBlock({
                         position: {

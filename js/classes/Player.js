@@ -50,6 +50,7 @@ class Player extends Sprite {
             // atualizando a hitbox
             this.updateHitbox()
 
+            // contorno da hitbox
             // c.fillRect(
             //     this.hitbox.position.x,
             //     this.hitbox.position.y,
@@ -101,6 +102,7 @@ class Player extends Sprite {
             this.frameRate = this.animations[name].frameRate
             this.frameBuffer = this.animations[name].frameBuffer
             this.loop = this.animations[name].loop
+            this.currentAnimation = this.animations[name]
         } catch (error) {
             throw new PlayerError("Erro ao trocar a sprite do jogador")
         }

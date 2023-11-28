@@ -26,6 +26,7 @@ class Sprite {
         this.animations = animations
         this.loop = loop
         this.autoplay = autoplay
+        this.currentAnimation
 
         // criando imagens automaticamente para cada objeto 
         if (this.animations) {
@@ -75,6 +76,13 @@ class Sprite {
                 this.currentFrame++
             } else if (this.loop) {
                 this.currentFrame = 0
+            }
+        }
+
+        if (this.currentAnimation?.onComplete) {
+            if (this.currentFrame === this.frameRate - 1 && !this.currentAnimation.isActive) {
+                this.currentAnimation.onComplete()
+                this.currentAnimation.isActive = true
             }
         }
     }
