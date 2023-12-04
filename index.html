@@ -1,18 +1,28 @@
-<style>
-    body{
-        background-color: black;
-    }
-</style>
-<canvas></canvas>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon/favicon.png">
+    <title>Julius, o Martelo</title>
+    <link rel="stylesheet" href="./assets/styles/main.css">
+</head>
+<body>
+    <canvas></canvas>
+    
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
+      integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="./assets/scripts/utils.js"></script>
+    <script src="./assets/scripts/data/collisions.js"></script>
+    <script src="./assets/scripts/classes/CollisionBlock.js"></script>
+    <script src="./assets/scripts/classes/Sprite.js"></script>
+    <script src="./assets/scripts/classes/Player.js"></script>
+    <script src="./assets/scripts/eventListeners.js"></script>
+    <script src="./engine.js"></script>
+</body>
+</html>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" 
-    integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug==" 
-    crossorigin="anonymous" 
-    referrerpolicy="no-referrer"></script>
-<script src="/js/utils.js"></script>
-<script src="/js/data/collisions.js"></script>
-<script src="/js/classes/CollisionBlock.js"></script>
-<script src="/js/classes/Sprite.js"></script>
-<script src="/js/classes/Player.js"></script>
-<script src="/js/eventListeners.js"></script> 
-<script src="index.js"></script>
